@@ -20,17 +20,21 @@ const charge = (token, amt, email) => {
     receipt_email: email
   });
 };
-
+router.get("/api/donate", (req,res,next) => {
+  res.send('Api of donate section')
+})
 router.post("/api/donate", async (req, res, next) => {
-  try {
+  // try {
     console.log(req);
-    let data = await charge(req, req.body.token.id, req.body.amount);
-    console.log(data);
-    res.send("Charged!");
-  } catch (e) {
-    console.log(e);
-    res.send(500);
-  }
+    // let data = await charge(req, req.body.token.id, req.body.amount);
+    console.log(req.body.token);
+    // res.send("Charged!");
+  // } catch (e) {
+    // console.log(e);
+    // res.send(500);
+    // res.send(req)
+    res.send('working )')
+  // }
 });
 
 module.exports = router;
