@@ -6,6 +6,9 @@ router.get("/api/hello", (req, res, next) => {
   console.log("sdasd");
 });
 
+router.get("/",(req,res,next) => {
+  res.send('gee')
+})
 const stripe = new stripeLoader("sk_test_Zq0gEeme3OrsfasvNj1usezK005wYl82oQ");
 
 const charge = (token, amt, email) => {
