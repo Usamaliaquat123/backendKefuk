@@ -27,7 +27,7 @@ router.get("/api/donate", (req,res,next) => {
   res.send('Api of donate section')
 })
 router.post("/api/donate", async (req, res, next) => {
-  // try {
+  try {
     console.log(req);
     let descText = ''
     if(req.body.amount == 10){
@@ -44,13 +44,14 @@ router.post("/api/donate", async (req, res, next) => {
     console.log(data);
     console.log("==================================");
     res.send("Charged!");
+    res.send(200)
     
-  // } catch (e) {
+  } catch (e) {
     // console.log(e);
     // res.send(500);
     // res.send(req)
     res.send('working )')
-  // }
+  }
 });
 
 module.exports = router;
