@@ -5,32 +5,34 @@ const router = express.Router();
 const GoogleSpreadsheet =  require('google-spreadsheet');
 const { promisify } = require('util');
 const creds = require('./client_secret.json')
-// var async = require('async');
 
 
 
 async function accessSpreadSheet (email,currentDate){
  
-  const doc = new GoogleSpreadsheet('1nJpLRHjhOG1tqqXDZgw3iegkbM3JQNVGaIkAlCooz-s');
-  await promisify(doc.useServiceAccountAuth)(creds)
-  const info = await promisify(doc.getInfo)();
 
-  // info[0]
-  // //  Selecting Sheets
-  const sheet = info.worksheets[0];
-
-
-  const row = {
-    subscriptionemails : email,
-    date : currentDate }
-    await promisify(sheet.addRow)(row)
 
 }
 // accessSpreadSheet('asdsa','asdawo')
 router.post("/api/subscribe", async (req, res, next) => {
-  accessSpreadSheet(req.body.email, req.body.currentDate)
   try {
-    res.send(200)
+   
+    const doc = new GoogleSpreadsheet('1nJpLRHjhOG1tqqXDZgw3iegkbM3JQNVGaIkAlCooz-s');
+    await promisify(doc.useServiceAccountAuth)(creds)
+    const info = await promisify(doc.getInfo)();
+  
+    // info[0]
+    // //  Selecting Sheets
+    const sheet = info.worksheets[0];
+  
+  
+    const row = {
+      subscriptionemails : req.body.email,
+      date : req.body.currentDate }
+
+        await promisify(sheet.addRow)(row)
+      res.send(200)
+
   }catch(e) {
     res.send(e)
   }
