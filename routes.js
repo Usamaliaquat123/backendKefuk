@@ -20,8 +20,8 @@ async function accessSpreadSheet(userEmail, currentDate){
 // accessSpreadSheet('sad@ahsd.com','asdjah')
 
 router.post("/api/subscribe", async (req, res, next) => {
-  
-  const doc = new GoogleSpreadsheet('1nJpLRHjhOG1tqqXDZgw3iegkbM3JQNVGaIkAlCooz-s');
+  try {
+    const doc = new GoogleSpreadsheet('1nJpLRHjhOG1tqqXDZgw3iegkbM3JQNVGaIkAlCooz-s');
   await promisify(doc.useServiceAccountAuth)(creds)
   const info = await promisify(doc.getInfo)();
 
@@ -36,6 +36,11 @@ router.post("/api/subscribe", async (req, res, next) => {
   }
 
   resolve(await promisify(sheet.addRow)(row))
+  res.send(200)
+  } catch (error) {
+    res.send(500)
+  }
+  
 
 
 });
