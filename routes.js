@@ -17,10 +17,10 @@ async function accessSpreadSheet(userEmail, currentDate){
  
 }
 
-function accessSpreadSheet (email,currentDate){
+async function accessSpreadSheet (email,currentDate){
   const doc = new GoogleSpreadsheet('1nJpLRHjhOG1tqqXDZgw3iegkbM3JQNVGaIkAlCooz-s');
-   promisify(doc.useServiceAccountAuth)(creds)
-  const info =  promisify(doc.getInfo)();
+  await promisify(doc.useServiceAccountAuth)(creds)
+  const info = await promisify(doc.getInfo)();
 
   // info[0]
   // //  Selecting Sheets
@@ -28,13 +28,13 @@ function accessSpreadSheet (email,currentDate){
 
 
   const row = {
-    subscriptionemails : req.body.email,
-    date : req.body.currentDate }
-     promisify(sheet.addRow)(row)
+    subscriptionemails : email,
+    date : currentDate }
+    await promisify(sheet.addRow)(row)
     return res.send(200)
 
 }
-
+// accessSpreadSheet('asdsa','asda')
 router.post("/api/subscribe", async (req, res, next) => {
   try {
     accessSpreadSheet(req.body.email, req.body.currentDate)
