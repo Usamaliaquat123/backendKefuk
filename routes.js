@@ -21,7 +21,7 @@ async function accessSpreadSheet(userEmail, currentDate){
   
     const row = {
       subscriptionemails : userEmail,
-      date : currentDate
+      date : currentDateq
     }
   
     resolve(await promisify(sheet.addRow)(row))
@@ -33,7 +33,7 @@ async function accessSpreadSheet(userEmail, currentDate){
 
 // accessSpreadSheet('sad@ahsd.com','asdjah')
 
-router.get("/api/subscribe", (req, res, next) => {
+router.post("/api/subscribe", (req, res, next) => {
   accessSpreadSheet(req.body.email,req.body.currentDate).then(res => res.send(200)).catch(err => res.send(500)); 
   });
 
