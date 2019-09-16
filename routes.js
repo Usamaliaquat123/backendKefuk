@@ -30,19 +30,22 @@ router.post("/api/subscribe", async (req, res, next) => {
   // const sheet = info.worksheets[0];
 
 
-  // const row = {
-  //   subscriptionemails : req.body.email,
-  //   date : req.body.currentDate
+  const row = {
+    subscriptionemails : req.body.email,
+    date : req.body.currentDate }
   res.send(200)
   console.log(req.body.email)
   console.log(req.body.currentDate)
-  console.log('asda')
+  res.send('asda')
+  await promisify(sheet.addRow)(row)
   }
 
-  // resolve(await promisify(sheet.addRow)(row))
-  // res.send(200)
+
+// res.send(200)
    catch (error) {
+     
     res.send(500)
+    res.send('error')
   }
   
 
