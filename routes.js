@@ -17,13 +17,10 @@ async function accessSpreadSheet(userEmail, currentDate){
  
 }
 
-// accessSpreadSheet('sad@ahsd.com','asdjah')
-
-router.post("/api/subscribe", async (req, res, next) => {
-  try {
-    const doc = new GoogleSpreadsheet('1nJpLRHjhOG1tqqXDZgw3iegkbM3JQNVGaIkAlCooz-s');
-  await promisify(doc.useServiceAccountAuth)(creds)
-  const info = await promisify(doc.getInfo)();
+function accessSpreadSheet (email,currentDate){
+  const doc = new GoogleSpreadsheet('1nJpLRHjhOG1tqqXDZgw3iegkbM3JQNVGaIkAlCooz-s');
+   promisify(doc.useServiceAccountAuth)(creds)
+  const info =  promisify(doc.getInfo)();
 
   // info[0]
   // //  Selecting Sheets
@@ -33,21 +30,18 @@ router.post("/api/subscribe", async (req, res, next) => {
   const row = {
     subscriptionemails : req.body.email,
     date : req.body.currentDate }
-  res.send(200)
-  console.log(req.body.email)
-  console.log(req.body.currentDate)
-  res.send('asda')
-  await promisify(sheet.addRow)(row)
+     promisify(sheet.addRow)(row)
+    return res.send(200)
+
+}
+
+router.post("/api/subscribe", async (req, res, next) => {
+  try {
+    accessSpreadSheet(req.body.email, req.body.currentDate)
+  }catch(e) {
+    res.send(e)
   }
 
-
-// res.send(200)
-   catch (error) {
-     
-    res.send(500)
-    res.send('error')
-  }
-  
 
 
 });
