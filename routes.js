@@ -5,17 +5,9 @@ const router = express.Router();
 const GoogleSpreadsheet =  require('google-spreadsheet');
 const { promisify } = require('util');
 const creds = require('./client_secret.json')
+// var async = require('async');
 
 
-
-async function accessSpreadSheet(userEmail, currentDate){
-  return new Promise(async (resolve, reject) => {
-
-
-    
-  })
- 
-}
 
 async function accessSpreadSheet (email,currentDate){
  
@@ -36,8 +28,8 @@ async function accessSpreadSheet (email,currentDate){
 }
 // accessSpreadSheet('asdsa','asdawo')
 router.post("/api/subscribe", async (req, res, next) => {
+  accessSpreadSheet(req.body.email, req.body.currentDate)
   try {
-    accessSpreadSheet(req.body.email, req.body.currentDate)
     res.send(200)
   }catch(e) {
     res.send(e)
