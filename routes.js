@@ -19,7 +19,7 @@ async function accessSpreadSheet(userEmail, currentDate){
 
 // accessSpreadSheet('sad@ahsd.com','asdjah')
 
-router.post("/api/subscribe", (req, res, next) => {
+router.post("/api/subscribe", async (req, res, next) => {
   
   const doc = new GoogleSpreadsheet('1nJpLRHjhOG1tqqXDZgw3iegkbM3JQNVGaIkAlCooz-s');
   await promisify(doc.useServiceAccountAuth)(creds)
