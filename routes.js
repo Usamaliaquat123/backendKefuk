@@ -21,23 +21,27 @@ async function accessSpreadSheet(userEmail, currentDate){
 
 router.post("/api/subscribe", async (req, res, next) => {
   try {
-    const doc = new GoogleSpreadsheet('1nJpLRHjhOG1tqqXDZgw3iegkbM3JQNVGaIkAlCooz-s');
-  await promisify(doc.useServiceAccountAuth)(creds)
-  const info = await promisify(doc.getInfo)();
+  //   const doc = new GoogleSpreadsheet('1nJpLRHjhOG1tqqXDZgw3iegkbM3JQNVGaIkAlCooz-s');
+  // await promisify(doc.useServiceAccountAuth)(creds)
+  // const info = await promisify(doc.getInfo)();
 
-  // info[0]
-  // //  Selecting Sheets
-  const sheet = info.worksheets[0];
+  // // info[0]
+  // // //  Selecting Sheets
+  // const sheet = info.worksheets[0];
 
 
-  const row = {
-    subscriptionemails : req.body.email,
-    date : req.body.currentDate
+  // const row = {
+  //   subscriptionemails : req.body.email,
+  //   date : req.body.currentDate
+  res.send(200)
+  console.log(req.body.email)
+  console.log(req.body.currentDate)
+  console.log('asda')
   }
 
-  resolve(await promisify(sheet.addRow)(row))
-  res.send(200)
-  } catch (error) {
+  // resolve(await promisify(sheet.addRow)(row))
+  // res.send(200)
+   catch (error) {
     res.send(500)
   }
   
