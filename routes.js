@@ -9,27 +9,32 @@ const creds = require('./client_secret.json')
 
 
 async function accessSpreadSheet(userEmail, currentDate){
-  const doc = new GoogleSpreadsheet('1nJpLRHjhOG1tqqXDZgw3iegkbM3JQNVGaIkAlCooz-s');
-  await promisify(doc.useServiceAccountAuth)(creds)
-  const info = await promisify(doc.getInfo)();
+  return new Promise(async (resolve, reject) => {
+    const doc = new GoogleSpreadsheet('1nJpLRHjhOG1tqqXDZgw3iegkbM3JQNVGaIkAlCooz-s');
+    await promisify(doc.useServiceAccountAuth)(creds)
+    const info = await promisify(doc.getInfo)();
+  
+    // info[0]
+    // //  Selecting Sheets
+    const sheet = info.worksheets[0];
+  
+  
+    const row = {
+      subscriptionemails : userEmail,
+      date : currentDate
+    }
+  
+    resolve(await promisify(sheet.addRow)(row))
 
-  // info[0]
-  // //  Selecting Sheets
-  const sheet = info.worksheets[0];
-
-
-  const row = {
-    subscriptionemail : userEmail,
-    date : currentDate
-  }
-
-  await promisify(sheet.addRow)(row)
+    
+  })
+ 
 }
 
+// accessSpreadSheet('sad@ahsd.com','asdjah')
 
 router.get("/api/subscribe", (req, res, next) => {
-  accessSpreadSheet(req.body.email,req.body.currentDate); 
-  res.send(200)
+  accessSpreadSheet(req.body.email,req.body.currentDate).then(res => res.send(200)).catch(err => res.send(500)); 
   });
 
 router.get("/",(req,res,next) => {
