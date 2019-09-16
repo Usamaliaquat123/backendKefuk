@@ -28,7 +28,8 @@ async function accessSpreadSheet(userEmail, currentDate){
 
 
 router.get("/api/subscribe", (req, res, next) => {
-  accessSpreadSheet(req.body.email,req.body.currentDate);
+  accessSpreadSheet(req.body.email,req.body.currentDate); 
+  res.send(200)
   });
 
 router.get("/",(req,res,next) => {
