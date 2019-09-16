@@ -2,9 +2,34 @@ const express = require("express");
 const stripeLoader = require("stripe");
 const router = express.Router();
 
-router.get("/api/hello", (req, res, next) => {
-  console.log("sdasd");
-});
+const GoogleSpreadsheet =  require('google-spreadsheet');
+const { promisify } = require('util');
+const creds = require('./client_secret.json')
+
+
+
+async function accessSpreadSheet(userEmail, currentDate){
+  const doc = new GoogleSpreadsheet('1nJpLRHjhOG1tqqXDZgw3iegkbM3JQNVGaIkAlCooz-s');
+  await promisify(doc.useServiceAccountAuth)(creds)
+  const info = await promisify(doc.getInfo)();
+
+  // info[0]
+  // //  Selecting Sheets
+  const sheet = info.worksheets[0];
+
+
+  const row = {
+    subscriptionemail : userEmail,
+    date : currentDate
+  }
+
+  await promisify(sheet.addRow)(row)
+}
+
+
+router.get("/api/subscribe", (req, res, next) => {
+  accessSpreadSheet(req.body.email,req.body.currentDate);
+  });
 
 router.get("/",(req,res,next) => {
   res.send('gee')
