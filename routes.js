@@ -5,19 +5,49 @@ const router = express.Router();
 const GoogleSpreadsheet =  require('google-spreadsheet');
 const { promisify } = require('util');
 const creds = require('./client_secret.json')
-const {volunteer} = require('./volunteer')
 
 
-async function accessSpreadSheet (email,currentDate){
- 
+const volunteer = async (name, address , mobile, email, type) => {
+  return new Promise(async(resolve,reject) => {
+      try {
+          const doc = new GoogleSpreadsheet('1nJpLRHjhOG1tqqXDZgw3iegkbM3JQNVGaIkAlCooz-s');
+      await promisify(doc.useServiceAccountAuth)(creds)
+      const info = await promisify(doc.getInfo)();
+
+          const sheet = info.worksheets[1];
+const row = {
+    name,
+   address,
+  mobile,
+email,
+type }
+
+
+await promisify(sheet.addRow)(row)
+resolve()
+      } catch (error) {
+          reject(error)
+      }
+  })
 
 
 }
 
 
 
-router.post('/api/volunteer',async (req,res,next) => {
+// volunteer('ada','asda','asdada','dajnj','asda').then(res => console.log(res)).catch(err => console.log(err))
 
+
+router.post("/api/volunteer",async (req,res,next) => {
+try {
+  console.log(req)
+  // res.sendStatus(200)
+  volunteer(req.body.name, req.body.address, req.body.mobile, req.body.email,req.body.type).then(res => res.sendStatus(200)).catch(err => res.sendStatus(400))
+  console.log(req.body.address)
+} catch (error) {
+  // res.sendStatus(400)
+  console.log(req.body.address)
+}
 })
 
 
@@ -28,6 +58,7 @@ router.post('/api/volunteer',async (req,res,next) => {
 // accessSpreadSheet('asdsa','asdawo')
 router.post("/api/subscribe", async (req, res, next) => {
   try {
+
     res.send(200)
    
     const doc = new GoogleSpreadsheet('1nJpLRHjhOG1tqqXDZgw3iegkbM3JQNVGaIkAlCooz-s');
@@ -48,8 +79,7 @@ router.post("/api/subscribe", async (req, res, next) => {
   }catch(e) {
     res.send(e)
   }
-
-
+  
 
 });
 
@@ -74,8 +104,8 @@ router.get("/api/donate", (req,res,next) => {
   res.send('Api of donate section')
 })
 router.post("/api/donate", async (req, res, next) => {
+  // console.log(req.body);
   try {
-    console.log(req);
     let descText = ''
     if(req.body.amount == 10){
       descText = "Donation of education of a child"
