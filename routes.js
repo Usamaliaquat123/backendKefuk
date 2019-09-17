@@ -35,18 +35,34 @@ resolve()
 
 
 
-// volunteer('ada','asda','asdada','dajnj','asda').then(res => console.log(res)).catch(err => console.log(err))
+const subscribe = async (email) => {
+  return new Promise(async(resolve,reject) => {
+    try {
+      const doc = new GoogleSpreadsheet('1nJpLRHjhOG1tqqXDZgw3iegkbM3JQNVGaIkAlCooz-s');
+      await promisify(doc.useServiceAccountAuth)(creds)
+      const info = await promisify(doc.getInfo)();
 
+          const sheet = info.worksheets[0];
+const row = {
+    subscriptionemails: email }
+
+    await promisify(sheet.addRow)(row)
+    resolve()
+
+    } catch (error) {
+      reject(error)
+    }
+  })
+}
 
 router.post("/api/volunteer",async (req,res,next) => {
 try {
-  console.log(req)
-  // res.sendStatus(200)
-  volunteer(req.body.name, req.body.address, req.body.mobile, req.body.email,req.body.type).then(res => res.sendStatus(200)).catch(err => res.sendStatus(400))
-  console.log(req.body.address)
+  res.sendStatus(200)
+  const fundAndVolunter = `${req.body.fundraise} ${req.body.volunteer}`
+  volunteer(req.body.name, req.body.address, req.body.mobile, req.body.email,fundAndVolunter).then(res => res.sendStatus(200)).catch(err => res.sendStatus(400))
+  
 } catch (error) {
-  // res.sendStatus(400)
-  console.log(req.body.address)
+  res.sendStatus(400)
 }
 })
 
@@ -55,31 +71,12 @@ try {
 
 
 
-// accessSpreadSheet('asdsa','asdawo')
 router.post("/api/subscribe", async (req, res, next) => {
   try {
-
-    res.send(200)
-   
-    const doc = new GoogleSpreadsheet('1nJpLRHjhOG1tqqXDZgw3iegkbM3JQNVGaIkAlCooz-s');
-    await promisify(doc.useServiceAccountAuth)(creds)
-    const info = await promisify(doc.getInfo)();
-  
-    // info[0]
-    // //  Selecting Sheets
-    const sheet = info.worksheets[0];
-   res.send(`${sheet.title}`)
-  
-    // const row = {
-    //   subscriptionemails : req.body.email,
-    //   date : req.body.currentDate }
-
-    //     await promisify(sheet.addRow)(row)
-
-  }catch(e) {
-    res.send(e)
+      subscribe(req.body.email).then(res => res.sendStatus(200)).catch(err => res.sendStatus(400))
+  } catch (error) {
+    res.sendStatus(400)
   }
-  
 
 });
 
@@ -117,9 +114,6 @@ router.post("/api/donate", async (req, res, next) => {
       descText = "Custom Donation"
     }
     let data = await charge(req.body.token.id, req.body.amount, req.body.email, descText);
-    console.log("==================================");
-    console.log(data);
-    console.log("==================================");
     res.send("Charged!");
     res.send(200)
     
