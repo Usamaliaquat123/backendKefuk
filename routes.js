@@ -21,8 +21,6 @@ const row = {
   mobile,
 email,
 type }
-
-
 await promisify(sheet.addRow)(row)
 resolve()
       } catch (error) {
@@ -32,6 +30,7 @@ resolve()
 
 
 }
+
 
 
 
@@ -115,13 +114,13 @@ router.post("/api/donate", async (req, res, next) => {
     }
     let data = await charge(req.body.token.id, req.body.amount, req.body.email, descText);
     res.send("Charged!");
-    res.send(200)
+    res.sendStatus(200)
     
   } catch (e) {
     // console.log(e);
     // res.send(500);
     // res.send(req)
-    res.send('working )')
+    res.sendStatus(400)
   }
 });
 
