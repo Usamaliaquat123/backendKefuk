@@ -58,14 +58,9 @@ const row = {
 
 // subscribe('sad').then(res => console.log(`ajsd${res}`)).catch(err => console.log(`error ${err}`))
 router.post("/api/volunteer",async (req,res,next) => {
-try {
-  res.sendStatus(200)
   const fundAndVolunter = `${req.body.fundraise} ${req.body.volunteer}`
   volunteer(req.body.name, req.body.address, req.body.mobile, req.body.email,fundAndVolunter).then(res => res.sendStatus(200)).catch(err => res.sendStatus(400))
-  
-} catch (error) {
-  res.sendStatus(400)
-}
+  // res.sendStatus(200)
 })
 
 
@@ -74,11 +69,7 @@ try {
 
 
 router.post("/api/subscribe", async (req, res, next) => {
-  try {
       subscribe(req.body.email).then(res => res.sendStatus(200)).catch(err => res.sendStatus(400))
-  } catch (error) {
-    res.sendStatus(400)
-  }
 
 });
 
