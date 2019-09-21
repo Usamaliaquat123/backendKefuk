@@ -67,10 +67,13 @@ router.post("/api/volunteer",async (req,res,next) => {
 
 
 
-
 router.post("/api/subscribe", async (req, res, next) => {
-      subscribe('asda').then(res => res.sendStatus(200)).catch(err => res.sendStatus(400))
-
+  try {
+    console.log(req.body.email)
+    await subscribe(req.body.email).then(resp => res.sendStatus(200)).catch(err => res.sendStatus(err))
+  } catch (error) {
+    res.sendStatus(400)
+  }
 });
 
 router.get("/",(req,res,next) => {
