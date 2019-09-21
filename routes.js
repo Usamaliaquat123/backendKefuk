@@ -22,7 +22,7 @@ const row = {
 email,
 type }
 await promisify(sheet.addRow)(row)
-resolve()
+resolve(200)
       } catch (error) {
           reject(error)
       }
@@ -37,7 +37,7 @@ resolve()
 const subscribe = async (email) => {
   return new Promise(async(resolve,reject) => {
     try {
-      const doc = new GoogleSpreadsheet('1nJpLRHjhOG1tqqXDZgw3iegkbM3JQNVGaIkAlCooz-s');
+      const doc = new GoogleSpreadsheet('1jjS16xtL_c3USCU9cXVSd36liMww71K3BXdhYyxz6PU');
       await promisify(doc.useServiceAccountAuth)(creds)
       const info = await promisify(doc.getInfo)();
 
@@ -46,7 +46,7 @@ const row = {
     subscriptionemails: email }
 
     await promisify(sheet.addRow)(row)
-    resolve()
+    resolve(200)
 
     } catch (error) {
       reject(error)
@@ -54,6 +54,9 @@ const row = {
   })
 }
 
+
+
+// subscribe('sad').then(res => console.log(`ajsd${res}`)).catch(err => console.log(`error ${err}`))
 router.post("/api/volunteer",async (req,res,next) => {
 try {
   res.sendStatus(200)
