@@ -5,7 +5,7 @@ const router = express.Router();
 const GoogleSpreadsheet =  require('google-spreadsheet');
 const { promisify } = require('util');
 const creds = require('./client_secret.json')
-const cors = require('cors');
+// const cors = require('cors');
 
 const volunteer = async (name, address , mobile, email, type) => {
   return new Promise(async(resolve,reject) => {
@@ -56,7 +56,7 @@ const row = {
 
 
 
-subscribe('sadasd').then(res => console.log(`ajsd${res}`)).catch(err => console.log(`error ${err}`))
+// subscribe('sadasd').then(res => console.log(`ajsd${res}`)).catch(err => console.log(`error ${err}`))
 router.post("/api/volunteer",async (req,res,next) => {
   const fundAndVolunter = `${req.body.fundraise} ${req.body.volunteer}`
   volunteer(req.body.name, req.body.address, req.body.mobile, req.body.email,fundAndVolunter).then(res => res.send(200)).catch(err => res.send(400))
